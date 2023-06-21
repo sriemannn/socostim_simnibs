@@ -10,11 +10,6 @@ for sub in $subs; do
         continue
     fi
     
-    # do not process 'SoCoStim002_out'
-    if [ "$sub" = "SoCoStim002_out" ]; then
-        continue
-    fi
-    
     t1="$basedir/$sub/rT1w.nii.gz"
     t2="$basedir/$sub/rT2w.nii.gz"
     
