@@ -15,21 +15,30 @@ PATH2XLSX = os.path.join(
 )
 VP_COL = "ID"
 SITE_COL = "StimSite"
-cols = [VP_COL, SITE_COL]
+AGE_GROUP = "AgeGroup"
+cols = [VP_COL, SITE_COL, AGE_GROUP]
 
 stim_conditions = pd.read_excel(
     PATH2XLSX, index_col=None, usecols=cols, engine="openpyxl"
 )
 
-stim_conditions = stim_conditions.dropna().assign(
+stim_conditions = stim_conditions.assign(
     ID="SoCoStim" + (stim_conditions.ID.astype(str).str.zfill(3))
 )
+
 stim_conditions = stim_conditions[stim_conditions["ID"].isin(subs)]
 
 preprocessing_missing = np.sum(~stim_conditions["ID"].isin(subs))
 print(f"Number of subjects with missing preprocessing: {preprocessing_missing}.")
 
-stim_conditions = stim_conditions.to_numpy()
+simulation_cols = [VP_COL, SITE_COL]
+
+old = stim_conditions.dropna()
+
+young = stim_conditions.loc[stim_conditions[AGE_GROUP] == 0]
+young_rTPJ = young.fillna("rTPJ")
+young_dmPFC = young.fillna("dmPFC")
+stim_conditions = pd.concat([young_dmPFC, young_rTPJ, old])[simulation_cols].to_numpy()
 
 ELECTRODETHICKNESS = 2
 GELTHICKNESS = 1
