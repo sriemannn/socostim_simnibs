@@ -38,7 +38,11 @@ old = stim_conditions.dropna()
 young = stim_conditions.loc[stim_conditions[AGE_GROUP] == 0]
 young_rTPJ = young.fillna("rTPJ")
 young_dmPFC = young.fillna("dmPFC")
-stim_conditions = pd.concat([young_dmPFC, young_rTPJ, old])[simulation_cols].to_numpy()
+stim_conditions = pd.concat([young_dmPFC, young_rTPJ, old])
+
+stim_conditions.to_csv("simulation_stim_conditions.csv", index=False)
+
+stim_conditions = stim_conditions[simulation_cols].to_numpy()
 
 ELECTRODETHICKNESS = 2
 GELTHICKNESS = 1
