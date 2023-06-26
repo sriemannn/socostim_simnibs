@@ -8,5 +8,6 @@ remaining
 subjects
 */
 *.csv
+*.xlsx
 *.msh
 *.png
