@@ -88,6 +88,9 @@ for conditions in stim_conditions:
     if not msh_file_exists:
         continue
 
+    if sub == "SoCoStim_033":
+        continue
+
     results_fsavg = simnibs.read_msh(msh_path)
     fields[f"E_magn_{site}_{age_group}"].append(results_fsavg.field["E_magn"].value)
     fields[f"E_normal_{site}_{age_group}"].append(results_fsavg.field["E_normal"].value)
@@ -132,6 +135,8 @@ results_fsavg.add_node_field(
     roi_creator(coords["dmPFC"]["MNI_under_electrode"], results_fsavg.nodes.node_coord),
     "dmPFC_MNI_under_electrode",
 )
+
+results_fsavg.view(visible_fields=list(fields.keys())[0]).show()
 
 subjects = []
 E_magn = []
