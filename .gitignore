@@ -13,6 +13,6 @@ subjects
 *.png
 *.txt
 *.pdf
-pyv_headless_setup.py
+pyv_headless_setup.sh
 montages_screenshots.py
 utils.py
