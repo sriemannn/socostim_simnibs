@@ -11,3 +11,8 @@ subjects
 *.xlsx
 *.msh
 *.png
+*.txt
+*.pdf
+pyv_headless_setup.py
+montages_screenshots.py
+utils.py
