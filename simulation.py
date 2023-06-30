@@ -47,6 +47,15 @@ stim_conditions = stim_conditions[simulation_cols].to_numpy()
 ELECTRODETHICKNESS = 2
 GELTHICKNESS = 1
 
+ring_over_ear = [
+    "SoCoStim001",
+    "SoCoStim038",
+    "SoCoStim066",
+    "SoCoStim067",
+    "SoCoStim072",
+    "SoCoStim131",
+]
+
 for condition in alive_it(stim_conditions):
     sub, site = condition
 
@@ -57,8 +66,13 @@ for condition in alive_it(stim_conditions):
     if not os.path.exists(msh_path):
         continue
 
-    if os.path.exists(output_path):
+    if os.path.exists(output_path) and not sub in ring_over_ear:
         continue
+
+    elif os.path.exists(output_path) and sub in ring_over_ear and site == "rTPJ":
+        output_path = os.path.join(
+            basedir, sub, f"simnibs4_simulation_{site}_altermatíve_rTPJ coordinate"
+        )
 
     s = sim_struct.SESSION()
     s.map_to_fsavg = True
