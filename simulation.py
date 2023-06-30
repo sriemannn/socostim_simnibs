@@ -69,6 +69,9 @@ for condition in alive_it(stim_conditions):
     if os.path.exists(output_path) and not sub in ring_over_ear:
         continue
 
+    elif os.path.exitsts(output_path) and sub in ring_over_ear and site == "dmPFC":
+        continue
+
     elif os.path.exists(output_path) and sub in ring_over_ear and site == "rTPJ":
         output_path = os.path.join(
             basedir, sub, f"simnibs4_simulation_{site}_altermatíve_rTPJ coordinate"
