@@ -110,7 +110,7 @@ for condition in alive_it(stim_conditions):
 
     cathode = tdcslist.add_electrode()
     cathode.centre = (
-        mni2subject_coords(coordinates=[], m2m_folder=m2m_path)
+        mni2subject_coords(coordinates=[72.529, -47.867, 54.620], m2m_folder=m2m_path)
         if "alternative" in output_path
         else CENTRE
     )  # TODO
