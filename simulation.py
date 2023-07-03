@@ -69,12 +69,12 @@ for condition in alive_it(stim_conditions):
     if os.path.exists(output_path) and not sub in ring_over_ear:
         continue
 
-    elif os.path.exitsts(output_path) and sub in ring_over_ear and site == "dmPFC":
+    elif os.path.exists(output_path) and sub in ring_over_ear and site == "dmPFC":
         continue
 
     elif os.path.exists(output_path) and sub in ring_over_ear and site == "rTPJ":
         output_path = os.path.join(
-            basedir, sub, f"simnibs4_simulation_{site}_altermatíve_rTPJ coordinate"
+            basedir, sub, f"simnibs4_simulation_{site}_alternative_rTPJ_coordinate"
         )
 
     s = sim_struct.SESSION()
@@ -109,7 +109,11 @@ for condition in alive_it(stim_conditions):
     anode.channelnr = 1
 
     cathode = tdcslist.add_electrode()
-    cathode.centre = CENTRE
+    cathode.centre = (
+        mni2subject_coords(coordinates=[], m2m_folder=m2m_path)
+        if "alternative" in output_path
+        else CENTRE
+    )  # TODO
     cathode.shape = "ellipse"
     cathode.dimensions = [OUTERRING, OUTERRING]
     cathode.thickness = [GELTHICKNESS, ELECTRODETHICKNESS]
