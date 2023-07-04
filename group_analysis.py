@@ -6,10 +6,25 @@ import os.path as op
 import seaborn as sns
 
 
-def msh_path_creator(row):
+alt_mshs = True
+
+
+def msh_path_creator(row, alternative=False):
+    subject_directory = op.join(basedir, row.ID)
+    alternative_msh_dir = op.join(
+        subject_directory,
+        "simnibs4_simulation_rTPJ_alternative_rTPJ_coordinate",
+    )
+
+    if op.exists(alternative_msh_dir):
+        return op.join(
+            alternative_msh_dir,
+            "fsavg_overlays",
+            f"SimNIBS4_{row.ID}_TDCS_1_scalar_fsavg.msh",
+        )
+
     return op.join(
-        basedir,
-        row.ID,
+        subject_directory,
         f"simnibs4_simulation_{row.StimSite}",
         "fsavg_overlays",
         f"SimNIBS4_{row.ID}_TDCS_1_scalar_fsavg.msh",
@@ -53,7 +68,7 @@ basedir = os.path.join("/media", "Data02", "SoCoStim", "SimNIBS")
 stim_conditions = pd.read_csv("simulation_stim_conditions.csv").sort_values("ID")
 
 stim_conditions = stim_conditions.assign(
-    msh_path=stim_conditions.apply(msh_path_creator, axis=1),
+    msh_path=stim_conditions.apply(msh_path_creator, args=(alt_mshs,), axis=1),
     msh_exists=lambda df: df.apply(lambda row: op.exists(row.msh_path), axis=1),
     age=np.where(stim_conditions.AgeGroup == 0, "young", "old"),
 )
@@ -185,7 +200,8 @@ data = data.merge(mean_fields, on=["ID", "StimSite"], how="left").drop(
 
 data_plot = data.drop(data.columns[data.columns.str.endswith("E_normal")], axis=1)
 
-data_plot.to_csv("SoCoStim_SimNIBS.csv", index=False)
+data_title = "SoCoStim_SimNIBS_alt_msh.csv" if alt_mshs else "SoCoStim_SimNIBS.csv"
+data_plot.to_csv(data_title, index=False)
 
 ax = sns.pairplot(
     data=data_plot[data_plot.msh_exists].drop(["ID", "StimSite", "msh_exists"], axis=1),
@@ -193,7 +209,12 @@ ax = sns.pairplot(
     diag_kind="hist",
 )
 
-ax.savefig("SoCoStim_SimNIBS_pairplot_E_magn.png")
+E_magn_pairplot = (
+    "SoCoStim_SimNIBS_pairplot_E_magn_alt_msh.png"
+    if alt_mshs
+    else "SoCoStim_SimNIBS_pairplot_E_magn.png"
+)
+ax.savefig()
 
 ax = sns.pairplot(
     data=data[data.msh_exists]
@@ -203,4 +224,9 @@ ax = sns.pairplot(
     diag_kind="hist",
 )
 
-ax.savefig("SoCoStim_SimNIBS_pairplot_E_normal.png")
+E_normal_pairplot = (
+    "SoCoStim_SimNIBS_pairplot_E_normal_alt_msh.png"
+    if alt_mshs
+    else "SoCoStim_SimNIBS_pairplot_E_normal.png"
+)
+ax.savefig(E_normal_pairplot)
