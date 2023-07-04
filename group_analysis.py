@@ -132,7 +132,7 @@ for key in [i.rsplit("_", 1)[0] for i in fields.keys()][::2]:
         f"{key}_std_contrast_young-old",
     )
 
-results_fsavg.view(visible_fields=list(fields.keys())[0]).show()
+# results_fsavg.view(visible_fields=list(fields.keys())[0]).show()
 
 results_fsavg.add_node_field(
     roi_creator(coords["rTPJ"]["Wang_2016_average"], results_fsavg.nodes.node_coord),
@@ -151,7 +151,7 @@ results_fsavg.add_node_field(
     "dmPFC_MNI_under_electrode",
 )
 
-results_fsavg.view(visible_fields=list(fields.keys())[0]).show()
+# results_fsavg.view(visible_fields=list(fields.keys())[0]).show()
 
 subjects = []
 E_magn = []
@@ -214,7 +214,7 @@ E_magn_pairplot = (
     if alt_mshs
     else "SoCoStim_SimNIBS_pairplot_E_magn.png"
 )
-ax.savefig()
+ax.savefig(E_magn_pairplot)
 
 ax = sns.pairplot(
     data=data[data.msh_exists]
